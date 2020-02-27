@@ -1,0 +1,340 @@
+#            Imagem a cores --> Imagem desenhada
+
+#  ordem funçoes: read_rgb_imagem:--> rgb_to_gray: --> convlution --> contour --> white_gray_image
+
+###############################################################################
+# Data
+
+.data
+	# File names
+	RGB_file_name:  .asciiz "lena.rgb"
+	GRAY_file_name: .asciiz "lena.gray"
+	CONTOUR_file_name: .asciiz "lena_final.gray"
+
+	# Buffers 
+	RGB_buffer:  .space 786432 # 512x512x3
+	GRAY_buffer: .space 262144 # 512x512
+	CONTOUR_buffer: .space 262144 # 512x512
+	
+	# Buffer sizes
+	RGB_buffer_size:  .word 786432
+	GRAY_buffer_size: .word 262144
+		
+	# Buffers
+	buffer_horizontal: .space 262144
+	buffer_vertical: .space 262144
+	buffer_contornos: .space 262144	
+	
+	
+###############################################################################
+# Text
+
+.text
+
+###############################################################################
+# Main
+
+main:
+	# Read rgb image to memory
+	la $a0, RGB_file_name
+	la $a1, RGB_buffer
+	la $a2, RGB_buffer_size
+	lw $a2, 0($a2)
+	jal read_rgb_image
+	nop
+	
+	# Transform rgb to gray
+	la $a0, RGB_buffer
+	la $a1, RGB_buffer_size
+	lw $a1, 0($a1)
+	la $a2, GRAY_buffer
+	la $a3, GRAY_buffer_size
+	lw $a3, 0($a3)
+	jal rgb_to_gray
+	nop
+
+	# Escrever ficheiro gray em ficheiro
+	la $a0,GRAY_file_name
+	move $a1,$a2
+	jal write_gray_image
+	nop
+	
+	# Faz convolução
+	la $a0, GRAY_buffer
+	la $a1, buffer_horizontal
+	la $a2, buffer_vertical
+	jal Convultion
+	nop
+	
+	# Faz contorno
+	la $a0, buffer_horizontal
+	la $a1, buffer_vertical
+	la $a2, CONTOUR_buffer
+	jal contornos
+	nop
+
+	# Escreve ficheiro com contorno num ficheiro
+	la $a0, CONTOUR_file_name
+	la $a1, CONTOUR_buffer
+	jal write_gray_image
+	nop
+
+	# Halt
+	j halt
+	nop
+	
+
+###############################################################################
+# read_rgb_image (TODO)
+# Arguments
+#  $a0 - String of file to read
+#  $a1 - Buffer with information read
+#  $a2 - Size of buffer to be read
+# Return
+#  Buffer to image read
+
+read_rgb_image:
+	# Place file an size in register
+	move $s0, $a0
+	move $s1, $a1
+	move $s2, $a2
+	
+	# Open file
+	move $a0, $s0 # File's directory/name
+	li $a1, 0
+	li $a2, 0     # Read life
+	li $v0, 13    # Option for opening file
+	syscall      
+
+	# Read file
+	move $a0, $v0  # File descriptor
+	move $a1, $s1  # Buffer with result
+	move $a2, $s2  # Space of information to read
+	li $v0, 14     # Read file
+	syscall
+	
+	# Store read buffer
+	move $s1, $v0
+
+	# Close file
+	li $v0, 16 # Close file
+	syscall
+	
+	# Return
+	move $v0, $s1 # Make return
+	jr $ra
+	nop
+	
+###############################################################################
+# Write gray image to file
+# $a0 - Name of file to write
+# $a1 - Buffer to write
+
+write_gray_image:
+	# Store argument $a1 in temp reg for later use
+	move $t0, $a1
+	
+	# abrir ficheiro escrita 
+	# $a0 already with name of file
+	li $a1,1
+	li $a2,0
+	li $v0,13
+	syscall
+	
+	# Escreve o gray num ficheiro
+	move $a0,$v0
+	move $a1, $t0
+	li $a2, 262144
+	li $v0,15
+	syscall
+	
+	# Return
+	jr $ra
+	nop
+	
+###############################################################################
+# Rgb to Grey
+# Arguments
+#  $a0 - Rgb buffer
+#  $a1 - Size of rgb buffer
+#  $a2 - Grey buffer
+#  $a3 - Size of grey buffer
+
+rgb_to_gray:
+	li $t3, 30 # Red percentage
+	li $t4, 59 # Green percentage
+	li $t5, 11 # Blue percentage
+	
+	move $s1, $a0 # Rgb buffer
+	move $s2, $a2 # Grey buffer
+	move $t7, $a3 # Counter
+
+pixel_convert_loop:
+	beqz $t7, rgb_to_grey_ret
+	nop
+
+	lbu $t0, 0($s1)	# load red bit
+	lbu $t1, 1($s1) # load green bit
+	lbu $t2, 2($s1) # load blue bit
+	
+	mul $t0,$t0,$t3	# $t0 = red x red percentage
+	mul $t1,$t1,$t4	# $t1 = green x green percentage
+	mul $t2,$t2,$t5	# $t2 = blue x blue percentage
+	
+	li $t6, 0       # Init $t6 to 0
+	
+	add $t6,$t0,$t1	# Sum red with green
+	add $t6,$t6,$t2 # Sum red and gree with blue
+	
+	div $t6, $t6, 100 # Divide all by 100
+	
+	sb $t6, 0($s2)  # Store calculated bit
+	
+ 	addi $s1,$s1,3	# Increment RGB buffer by 3
+ 	addi $s2,$s2,1	# Increment grey buffer by 1
+ 	addi $t7,$t7,-1	# Decrements counter
+ 	
+ 	# Loop
+ 	j pixel_convert_loop
+ 	nop
+ 	
+rgb_to_grey_ret:
+	jr $ra
+	nop
+
+###############################################################################
+# Convultion 
+# Arguments
+#  $a0 - Buffer of image to read
+#  $a1 - Buffer of Vertical Sobel
+#  $a2 - Buffer of Horizontal Sobel
+#
+
+Convultion:
+ 
+ 	li $t4,261632 
+	move $s5,$a0
+	move $s3,$a2
+	move $s4,$a1
+	
+	addi $s5,$s5,512
+	addi $s3,$s3,512
+	addi $s4,$s4,512
+	
+
+Convultion_for:	
+		beqz $t4,Convultion_end
+		nop
+		li $t1,0
+		li $t2,0
+		
+		# matriz: linha 1 coluna 1 (h e v )
+		lbu $t0,-513($s5)
+		add $t1,$t1,$t0
+		add $t2,$t2,$t0
+		
+		# matriz: linha 1 coluna 2 (v)
+		lbu $t0,-512($s5)
+		mul $t0,$t0,2
+		add $t2,$t2,$t0
+		
+		# matriz: linha 1 coluna  3 (h e v )
+		lbu $t0,-511($s5)
+		add $t2,$t2,$t0
+		mul $t0,$t0,-1
+		add $t1,$t1,$t0
+		
+		# matriz: linha 2 coluna 1  (h)
+		lbu $t0,-1($s5)
+		mul $t0,$t0,2
+		add $t1,$t1,$t0
+		
+		# matriz: linha 2 coluna 3 (h)
+		lbu $t0,1($s5)
+		mul $t0,$t0,-2
+		add $t1,$t1,$t0
+
+		# matriz: linha 3 coluna 1 (h e v )
+		lbu $t0,511($s5)
+		add $t1,$t1,$t0
+		mul $t0,$t0,-1
+		add $t2,$t2,$t0
+		
+		# matriz: linha 3 coluna 2 (v)
+		lbu $t0,512($s5)
+		mul $t0,$t0,-2
+		add $t2,$t2,$t0
+		
+		# matriz: linha 3 coluna 3 (h e v )
+		lbu $t0,513($s5)
+ 		mul $t0,$t0,-1
+ 		add $t1,$t1,$t0
+		add $t2,$t2,$t0
+ 		
+ 		# imagem com filtro sobel horizontal
+		abs $t1,$t1	#valor absoluto
+ 		div $t1,$t1,4	
+ 		sb $t1,0($s3)
+		
+ 		#imagem com filtro sobel vertical
+ 		abs $t2,$t2	#valor absoluto
+  		div $t2,$t2,4
+  		sb $t2,0($s4)
+ 		
+ 		# avan�ar os arrays 
+ 		
+ 		addi $s5,$s5,1 # anda um casa do array do gray 
+ 		addi $s3,$s3,1 # anda uma casa do array do sobel horizontal
+		addi $s4,$s4,1 # anda uma casa do array do sobel vertical 
+		addi $t4,$t4,-1 # decrementa o contador 
+		j Convultion_for
+		nop
+				
+Convultion_end:
+		jr $ra
+		nop
+
+###############################################################################		
+# Contornos
+# $a0 - Buffer horizontal
+# $a1 - Buffer vertical
+# $a2 - Buffer de contorno
+
+contornos:				
+	move $s3,$a0
+	move $s4,$a1
+	move $s6,$a2
+	li $t8,262144    # contador 
+	li $t5,255
+	
+contorno_loop:
+
+beqz $t8,contorno_ret
+nop
+	
+	lbu $t2, 0($s3)	# load primeiro bit horizontal
+	lbu $t3, 0($s4) # load primeiro bit vertical 
+	
+	add $t4,$t2,$t3 # soma do sobel vertical com o horizontal 
+	#div $t4,$t4,2   # divisao da soma das matrizes por 2 
+	
+	sub $t4,$t5,$t4  # para determinar a imagem complementar 
+	abs $t4,$t4	# valor absoluto (sem sinal)
+	sb $t4,0($s6)   # guardar o bit no buffer contornos	
+	
+	addi $s3,$s3,1  # avan�ar com o array horizontal
+	addi $s4,$s4,1  # avan�ar com o array vertical 
+	addi $s6,$s6,1  # avan�ar com o array contornos 
+	addi $t8,$t8,-1	# decrementa o contador
+ 	j contorno_loop
+ 	nop
+ 	
+contorno_ret:
+	jr $ra
+	nop
+
+	
+##############################################################################
+# Halt
+
+halt:
