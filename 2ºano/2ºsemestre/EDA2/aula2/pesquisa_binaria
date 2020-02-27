@@ -1,0 +1,59 @@
+#include <stdio.h>
+
+#define POSICOES 50000
+
+int auxiliar(int i, int max, int min, int v[s])
+{
+	int max = max;
+	int min = min;
+	int half = s / 2;
+	if(n == v[half])
+		return half
+
+	else if(n < v[half])
+	{
+		max = half;
+		auxiliar(i, half, min, v);
+	}
+		
+	else if(n > v[half])
+	{
+		min = half;
+		auxiliar(i, max, half, v);
+	}
+
+	if min = max
+		return max;
+
+
+}
+
+
+
+
+int main(void)
+{
+	int array[POSICOES];
+	for(int i = 0, o = 2; i < POSICOES; i++ )
+	{
+		array[i] = o;
+		//printf("%d\n", array[i]);
+		o+=2;
+	}
+
+	for (int i = 1; i <= POSICOES; ++i)
+  	{
+    	int p = procura(2 * i, POSICOES, array);
+
+    	if (p == -1)
+      		printf("Não encontrou %d\n", 2*i);
+    	
+    	else if(array[p] != 2 * i)
+     		printf("Encontrou %d na posição errada: %d\n", 2*i, p);
+  	}
+
+ 
+
+  	return 0;
+
+}

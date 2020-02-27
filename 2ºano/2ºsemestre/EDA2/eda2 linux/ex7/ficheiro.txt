@@ -1,0 +1,7 @@
+//iniciar o servidor na diretoria trabalh1/dist$
+
+java -classpath trabalh1.jar trabalh1.Servidor 9000
+
+//iniciar o cliente na diretoria trabalh1/dist$
+
+java -classpath trabalh1.jar trabalh1.Cliente localhost 9000
