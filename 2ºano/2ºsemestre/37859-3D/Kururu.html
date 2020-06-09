@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+        <title>Kururu</title>
+        <script type='text/javascript' src='./lib/x3dom-full.js'>            
+        </script>
+        <link rel='stylesheet' type='text/css' href='./lib/x3dom.css' />
+        <style type = "text/css">
+        th {
+            padding: 1em;
+            background-color:#EE3B3B;
+            color:white;
+        }
+        td {
+            padding: 0.5em;
+            background-color: #EEE;
+            width: 50%;
+            text-align: center;
+        }
+        table {
+            width:100%;
+        }
+        h1,h2, h4 {
+            text-align: center;
+        }
+            </style>
+
+    </head>
+    
+    <body>
+         <h1>Trabalho 3D, Aluno n.º 37859</h1> 
+        <table>
+        <tr>
+            <th>Original</th>
+            <th>Reprodução</th>
+        </tr>
+        <td><img src="./media/ChibiKururu.jpg" width = "500px" height = "500px"></img></td>
+        <td>
+    
+
+        <x3d width="500px" height="500px">
+        <scene>
+                <switch whichCoice = "1">
+                    <Sphere id="head" radius='1'></Sphere>
+                    <Sphere id="muffer" radius='0.6' ></Sphere>
+                    <Cylinder id="headmuffers" radius='0.6' height='0.2'></Cylinder>
+                    <Cylinder id="pacifierbase" radius='0.1' height='0.1'></Cylinder>
+                    <Cone id="upperbod" bottomRadius='0.489' topRadius='0.2' height='1'></Cone>
+                    <Sphere id="lowerbod" radius='0.507'></Sphere>
+                    <Cone id="arms" bottomRadius='0.12' topRadius='0.12' height='0.8'></Cone>
+                    <Cylinder id='finger' radius ='0.05' height='0.09'></Cone>
+                    <Sphere id='fingertip' radius = '0.05'></Sphere>
+                    <Cone id='legs' bottomRadius='0.07' topRadius='0.13' height='1'/></Cone>
+                    <Sphere id='footop' raidus='0.1'/></Sphere>
+                </switch>
+
+                <transform id="kururu">
+                    <!--                 HEAD                  -->
+                    <transform id="finalhead" translation="0 1 0">
+                        <transform translation="0 0 0" rotation="0 1 0 0.12">
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kururuhead.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="head"/>
+                                </shape> 
+                        </transform>
+
+                        <transform translation= "0.9 0 0" rotation= "0 0 1 1.55">
+                            <shape>     
+                                <appearance> 
+                                    <material diffuseColor="0.93 0.89 0.687"><material/>
+                                </appearance> 
+                                <x3dgeometrynode use="headmuffers"/>
+                                </shape> 
+                        </transform>
+
+                        <transform translation= "-0.905 0 0" rotation= "0 0 1 1.55">
+                            <shape>     
+                                <appearance> 
+                                    <material diffuseColor="0.93 0.89 0.687"><material/>
+                                </appearance> 
+                                <x3dgeometrynode use="headmuffers"/>
+                                </shape> 
+                        </transform>
+
+                        <transform translation="1 0 0" rotation= "0 0 1 1.55" scale="1 0.3 1">
+                            <shape>     
+                                <appearance> 
+                                    <material diffuseColor="0.93 0.89 0.687"><material/>
+                                </appearance> 
+                                <x3dgeometrynode use="muffer"/>
+                                </shape> 
+                        </transform>
+
+                        <transform translation="-1 0 0" rotation= "0 0 1 1.55" scale="1 0.3 1">
+                            <shape>     
+                                <appearance> 
+                                    <material diffuseColor="0.93 0.89 0.687"><material/>
+                                </appearance> 
+                                <x3dgeometrynode use="muffer"/>
+                                </shape> 
+                        </transform>
+
+                        <transform translation="0 -0.5 0.87" rotation= "1 0 0 -1" scale="1.5 0.5 1.5">
+                            <shape>     
+                                <appearance> 
+                                    <material diffuseColor="1 0.788 0.05"><material/>
+                                </appearance> 
+                                <x3dgeometrynode use="pacifierbase"/>
+                                </shape> 
+                        </transform>
+
+                        <transform translation="0 -0.547 0.937" scale="0.28 0.28 0.28">
+                            <shape>     
+                                <appearance> 
+                                    <material diffuseColor="1 0.788 0.05"><material/>
+                                </appearance> 
+                                <x3dgeometrynode use="muffer"/>
+                                </shape> 
+                        </transform>
+                    </transform>
+
+
+
+
+                    <!--                     BODY                -->
+                    <transform id="body" translation="0 -0.1 0">
+                        <shape>
+                            <appearance> 
+                                    <ImageTexture url="./media/upperbody.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="upperbod"/>
+                                </shape> 
+                    </transform>
+
+                    <transform translation="0 -0.69 0" scale="0.99 0.99 0.99">
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/lowerbody.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="lowerbod"/>
+                                </shape> 
+                    </transform>
+                    </transform>
+
+
+
+
+                    <!--                    ARMS                      -->
+                    <transform id="armss" translation="0 -0.1 0">
+                    <!--left shoulder-->
+                    <transform translation="0.3 -0.01 0" scale= "0.3 0.3 0.3" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="lowerbod"/>
+                                </shape> 
+                    </transform>
+                    <!--left arm-->
+                    <transform translation="-0.57 -0.35 0" scale= "1 1 1" rotation="0 0 1 -0.6">
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="arms"/>
+                                </shape> 
+                    </transform>
+                    <!--left palm-->
+                    <transform translation="-0.81 -0.7 0" scale= "0.24 0.24 0.24" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="lowerbod"/>
+                                </shape> 
+                    </transform>
+                    <!--right shoulder-->
+                    <transform translation="-0.3 -0.01 0" scale= "0.3 0.3 0.3" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="lowerbod"/>
+                                </shape> 
+                    </transform>
+                    <!--right arm-->
+                    <transform translation="0.57 -0.35 0" scale= "1 1 1" rotation="0 0 1 0.6">
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="arms"/>
+                                </shape> 
+                    </transform>
+                    <!--right palm-->
+                    <transform translation="0.81 -0.7 0" scale= "0.24 0.24 0.24" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="lowerbod"/>
+                                </shape> 
+                    </transform>
+                    <!--left thumb-->
+                    <transform translation="0.81 -0.82 0.08" scale="1.1 1.2 1" rotation= "1 0 0 -1" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="finger"/>
+                                </shape> 
+                    </transform>
+                    <!--left thumbend-->
+                    <transform translation="0.81 -0.85 0.13" scale="1 1 1" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="fingertip"/>
+                                </shape> 
+                    </transform>
+                    <!--left indicator-->
+                    <transform translation="0.95 -0.77 0.04" scale="0.8 1.2 1" rotation= "0 0 1 1.2" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="finger"/>
+                                </shape> 
+                    </transform>
+                    <!--left indicator tip-->
+                    <transform translation="1 -0.79 0.05" scale="0.8 0.8 0.8" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="fingertip"/>
+                                </shape> 
+                    </transform>
+                    <!--left middle-->
+                    <transform translation="0.94 -0.77 -0.04" scale="0.8 1.2 1" rotation= "0 0 1 1.2" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="finger"/>
+                                </shape> 
+                    </transform>
+                    <!--left middle tip-->
+                    <transform translation="0.98 -0.786 -0.05" scale="0.8 0.8 0.8" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="fingertip"/>
+                                </shape> 
+                    </transform>
+                    <!--left tiny-->
+                    <transform translation="0.86 -0.82 -0.08" scale="0.8 1.2 1" rotation= "0 1 1 1.2" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="finger"/>
+                                </shape> 
+                    </transform>
+                    <!--left tiny tip-->
+                    <transform translation="0.9 -0.86 -0.11" scale="0.8 0.8 0.8" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="fingertip"/>
+                                </shape> 
+                    </transform>
+                    <!--right thumb-->
+                    <transform translation="-0.81 -0.82 0.08" scale="1.1 1.2 1" rotation= "1 0 0 -1" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="finger"/>
+                                </shape> 
+                    </transform>
+                    <!--right thumbend-->
+                    <transform translation="-0.81 -0.85 0.13" scale="1 1 1" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="fingertip"/>
+                                </shape> 
+                    </transform>
+                    <!--right indicator-->
+                    <transform translation="-0.95 -0.77 0.04" scale="0.8 1.2 1" rotation= "0 0 1 -1.2" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="finger"/>
+                                </shape> 
+                    </transform>
+                    <!--right indicator tip-->
+                    <transform translation="-1 -0.79 0.05" scale="0.8 0.8 0.8" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="fingertip"/>
+                                </shape> 
+                    </transform>
+                    <!--right middle-->
+                    <transform translation="-0.94 -0.77 -0.04" scale="0.8 1.2 1" rotation= "0 0 1 -1.2" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="finger"/>
+                                </shape> 
+                    </transform>
+                    <!--right middle tip-->
+                    <transform translation="-0.98 -0.786 -0.05" scale="0.8 0.8 0.8" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="fingertip"/>
+                                </shape> 
+                    </transform>
+                    <!--right tiny-->
+                    <transform translation="-0.86 -0.82 -0.08" scale="0.8 1.2 1" rotation= "0 1 1 -1.2" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="finger"/>
+                                </shape> 
+                    </transform>
+                    <!--right tiny tip-->
+                    <transform translation="-0.9 -0.86 -0.11" scale="0.8 0.8 0.8" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="fingertip"/>
+                                </shape> 
+                    </transform>
+
+                    <!--        LEGS        -->
+                    <!-- right leg-->
+                    <transform translation="-0.3 -1.3 0" scale="1 1 1" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="legs"/>
+                                </shape> 
+                    </transform>
+                    <!-- right foot-->
+                    <transform translation="-0.3 -1.8 0.04" scale="0.1 0.03 0.1" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="footop"/>
+                                </shape> 
+                    </transform>
+                    <!-- left leg -->
+                    <transform translation="0.3 -1.3 0" scale="1 1 1" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="legs"/>
+                                </shape> 
+                    </transform>
+                    <!-- left foot-->
+                    <transform translation="0.3 -1.8 0.04" scale="0.1 0.03 0.1" >
+                            <shape>     
+                                <appearance> 
+                                    <ImageTexture url="./media/kurucolor.png"/>
+                                </appearance> 
+                                <x3dgeometrynode use="footop"/>
+                                </shape> 
+                    </transform>
+
+
+
+
+
+
+                </transform>
+
+
+
+
+            </scene> 
+            </x3d> 
+        </table>
+        <h2>  Sergeant Major Kururu is the head of communications in the Keroro Platoon. His body is yellow, with orange headgear that includes two headphone-like white pieces over his ears. His forehead and belly mark is a filled spiral. He wears glasses with spirals on them. Kururu was blue when he was little, but at the end of the short movie Secret of the Kero Ball, he became yellow, due to being stuck in a huge plate of curry that Keroro made for him from the Kero Ball. </h3>
+        <h4>Engenharia Informática, Computação Gráfica &mdash; 2017-2018</h4>
+    </body>
+</html>
