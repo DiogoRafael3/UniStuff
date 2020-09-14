@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.jdt.internal.ui.DynamicSourcesWorkingSet" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1592243170344_0" label="Java Main Sources" name="Java Main Sources">
+<item elementID="=SO2_Trabalho2/src\/main\/java=/gradle_scope=/main=/=/gradle_used_by_scope=/main,test=/" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=SO2_Trabalho2/src\/main\/resources=/gradle_scope=/main=/=/gradle_used_by_scope=/main,test=/" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.internal.ui.DynamicSourcesWorkingSet" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1592243170359_1" label="Java Test Sources" name="Java Test Sources">
+<item elementID="=SO2_Trabalho2/src\/test\/java=/test=/true=/=/gradle_scope=/test=/=/gradle_used_by_scope=/test=/" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1592243172652_2" label="Window Working Set" name="Aggregate for window 1592243172652"/>
+</workingSetManager>
